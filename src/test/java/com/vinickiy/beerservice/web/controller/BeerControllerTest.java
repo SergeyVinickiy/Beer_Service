@@ -1,6 +1,6 @@
-/*
 package com.vinickiy.beerservice.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vinickiy.beerservice.web.model.BeerDto;
 import com.vinickiy.beerservice.web.model.BeerStyleEnum;
@@ -14,9 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.util.UUID;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -51,8 +48,6 @@ class BeerControllerTest {
         BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
-        given(beerService.saveNewBeer(any())).willReturn(getValidBeerDto());
-
         mockMvc.perform(post("/api/v1/beer/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoJson))
@@ -60,10 +55,9 @@ class BeerControllerTest {
 
     }
 
+/*
     @Test
-    void updateBeerById() {
-
-        given(beerService.updateBeer(any(), any())).willReturn(getValidBeerDto());
+    void updateBeerById() throws JsonProcessingException {
 
         BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
@@ -74,14 +68,15 @@ class BeerControllerTest {
                 .andExpect(status().isNoContent());
 
     }
+*/
 
     BeerDto getValidBeerDto(){
         return BeerDto.builder()
                 .beerName("My Beer")
                 .beerStyle(BeerStyleEnum.ALE)
                 .price(new BigDecimal("2.99"))
-                .upc(BeerLoader.BEER_1_UPC)
+                .upc(123132132L)
                 .build();
     }
 
-}*/
+}
