@@ -1,36 +1,40 @@
 package com.vinickiy.beerservice.web.controller;
 
-
+import com.vinickiy.beerservice.services.BeerService;
 import com.vinickiy.beerservice.web.model.BeerDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.UUID;
 
+
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/beer/")
 @RestController
-public class BeerController {
+public class BeerController{
+
+    private final BeerService beerService;
 
     @GetMapping("/{beerId}")
-    public ResponseEntity<BeerDto> getBeerById(@PathVariable("beerId") UUID beerId){
+    public ResponseEntity<BeerDto> getById(@PathVariable("beerId") UUID beerId){
 
-        return new ResponseEntity<>(BeerDto.builder().build(), HttpStatus.OK);
+        return new ResponseEntity<>(beerService.getById(beerId), HttpStatus.OK);
 
     }
 
     @PostMapping
     public ResponseEntity saveNewBeer(@RequestBody @Validated BeerDto beerDto){
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(beerService.saveNewBeer(beerDto), HttpStatus.CREATED);
 
     }
 
     @PutMapping("/{beerId}")
     public ResponseEntity updateBeerById(@RequestBody @Validated BeerDto beerDto, @PathVariable UUID beerId){
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(beerService.updateBeer(beerDto, beerId), HttpStatus.NO_CONTENT);
 
     }
 
